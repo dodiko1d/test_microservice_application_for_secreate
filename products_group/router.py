@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from . import schemas, controller
 from sqlalchemy.orm import Session
 from database import SessionLocal
+from typing import List
 
 
 async def get_db():
@@ -15,10 +16,53 @@ async def get_db():
 router = APIRouter()
 
 
-@router.post('/create/')
+async def check_products_group_existence(products_group_id: int, db: Session = Depends(get_db)):
+    db_products_group = controller.get_products_group_data_by_id(db, products_group_id=products_group_id)
+    if not db_products_group:
+        raise HTTPException(status_code=400, detail='Products group with this id does not exist.')
+
+
+@router.get(
+    '',
+    summary='Get data about last products groups list.',
+)
+async def get_last_products_groups_data(limit: int = 5, db: Session = Depends(get_db)):
+    return controller.get_last_products_groups_data(db=db, limit=limit)
+
+
+@router.get(
+    '/{products_group_id}/',
+    summary='Get data about last products groups list.',
+)
+async def get_products_group_data_by_id(products_group_id: int, db: Session = Depends(get_db)):
+    return controller.get_products_group_data_by_id(db=db, products_group_id=products_group_id)
+
+
+@router.post(
+    '/create/',
+    summary='Create a products group.',
+)
 async def create(products_group: schemas.ProductsGroupCreation, db: Session = Depends(get_db)):
-    db_products_group = controller.get_products_group_by_id(db, products_group)
+    db_products_group = controller.get_products_group_data_by_id(db=db, products_group_id=products_group.id)
     if db_products_group:
-        raise HTTPException(status_code=400, detail="Product is already registered.")
+        raise HTTPException(status_code=400, detail='Products group is already registered.')
     controller.create_products_group(db=db, products_group=products_group)
     return {'status_code': '200'}
+
+
+@router.get(
+    '/get_products_ids_list/{products_group_id}',
+    summary='Get IDs of all products in group.',
+    dependencies=[Depends(check_products_group_existence)],
+)
+async def get_products_of_group_ids_list(products_group_id: int, limit: int = 5, db: Session = Depends(get_db)):
+    return controller.get_products_of_group_ids_list(db=db, products_group_id=products_group_id, limit=limit)
+
+
+@router.get(
+    '/get_products_list/{products_group_id}',
+    summary='Get list of last products in group by group ID.',
+    dependencies=[Depends(check_products_group_existence)],
+)
+async def get_last_products_of_group_data_list(products_group_id: int, limit: int = 5, db: Session = Depends(get_db)):
+    return controller.get_last_products_of_group_data_list(db=db, products_group_id=products_group_id, limit=limit)
