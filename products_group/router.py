@@ -50,6 +50,16 @@ async def create(products_group: schemas.ProductsGroupCreation, db: Session = De
     return {'status_code': '200'}
 
 
+@router.post(
+    '/remove/{products_group_id}',
+    summary='Remove a products group.',
+    dependencies=[Depends(check_products_group_existence)]
+)
+async def remove(products_group_id: int, db: Session = Depends(get_db)):
+    controller.remove_products_group(db=db, products_group_id=products_group_id)
+    return {'status_code': '200'}
+
+
 @router.get(
     '/get_products_ids_list/{products_group_id}',
     summary='Get IDs of all products in group.',

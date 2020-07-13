@@ -15,9 +15,9 @@ async def get_db():
 router = APIRouter()
 
 
-async def check_products_group_existence(product_id: int, db: Session = Depends(get_db)):
-    db_products_group = controller.get_product_data_by_id(db, product_id=product_id)
-    if not db_products_group:
+async def check_product_existence(product_id: int, db: Session = Depends(get_db)):
+    db_product = controller.get_product_data_by_id(db, product_id=product_id)
+    if not db_product:
         raise HTTPException(status_code=400, detail='Product with this id does not exist.')
 
 
@@ -27,4 +27,14 @@ async def create(product: schemas.ProductCreation, db: Session = Depends(get_db)
     if db_product:
         raise HTTPException(status_code=400, detail='Product has been already registered.')
     controller.create_product(db=db, product=product)
+    return {'status_code': '200'}
+
+
+@router.post(
+    '/remove/{product_id}',
+    summary='Remove a product.',
+    dependencies=[Depends(check_product_existence)]
+)
+async def remove(product_id: int, db: Session = Depends(get_db)):
+    controller.remove_product(db=db, product_id=product_id)
     return {'status_code': '200'}
