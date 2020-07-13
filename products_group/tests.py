@@ -1,4 +1,4 @@
-""" Separated tests for Product Groups. """
+""" Separated tests for Products Groups. """
 
 from fastapi.testclient import TestClient
 
