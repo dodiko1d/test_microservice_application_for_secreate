@@ -1,6 +1,4 @@
-"""
-Run with "python -m pytest".
-"""
+""" Separated tests for Products. """
 
 from fastapi.testclient import TestClient
 

@@ -1,3 +1,5 @@
+""" Controllers are containing main part of site's business-logic. """
+
 from sqlalchemy.orm import Session
 from sqlalchemy import literal
 from products_group import controller as products_group_controller

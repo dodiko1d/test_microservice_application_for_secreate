@@ -1,3 +1,5 @@
+""" Site paths work control - call necessary controllers. """
+
 from fastapi import APIRouter, Depends, HTTPException
 from . import schemas, controller
 from sqlalchemy.orm import Session

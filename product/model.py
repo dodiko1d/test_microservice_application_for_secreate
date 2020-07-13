@@ -1,3 +1,5 @@
+""" Database Product Model. """
+
 from sqlalchemy import Column, ForeignKey, Integer, String, CheckConstraint
 from database import Base
 from sqlalchemy.orm import relationship
@@ -17,5 +19,5 @@ class Product(Base):
 
     __table_args__ = (
         CheckConstraint(0 <= stock_balance, name='check_stock_balance_positive'),
-        CheckConstraint(0 <= reserved, name='check_reserved_product'),
+        CheckConstraint(0 <= reserved_number, name='check_reserved_product'),
     )
