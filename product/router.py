@@ -38,3 +38,14 @@ async def create(product: schemas.ProductCreation, db: Session = Depends(get_db)
 async def remove(product_id: int, db: Session = Depends(get_db)):
     controller.remove_product(db=db, product_id=product_id)
     return {'status_code': '200'}
+
+
+@router.post(
+    '/change_property/{product_id}/{property_name}/{new_property_value}',
+    summary='Change product property.',
+    dependencies=[Depends(check_product_existence)]
+)
+async def change(product_id: int, property_name: str, new_property_value, db: Session = Depends(get_db)):
+    return controller.change_product_property(db=db, product_id=product_id,
+                                              property_name=property_name,
+                                              new_property_value=new_property_value)

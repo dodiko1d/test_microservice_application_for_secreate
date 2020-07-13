@@ -59,6 +59,17 @@ async def remove(products_group_id: int, db: Session = Depends(get_db)):
     return {'status_code': '200'}
 
 
+@router.post(
+    '/change_property/{products_group_id}/{property_name}/{new_property_value}',
+    summary='Change products group property.',
+    dependencies=[Depends(check_products_group_existence)]
+)
+async def change(products_group_id: int, property_name: str, new_property_value, db: Session = Depends(get_db)):
+    return controller.change_products_group_property(db=db, products_group_id=products_group_id,
+                                                     property_name=property_name,
+                                                     new_property_value=new_property_value)
+
+
 @router.get(
     '/get_products_ids_list/{products_group_id}',
     summary='Get IDs of all products in group.',

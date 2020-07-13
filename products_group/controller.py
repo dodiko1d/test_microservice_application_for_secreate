@@ -26,6 +26,24 @@ def remove_products_group(db: Session, products_group_id: int):
     db.commit()
 
 
+def change_products_group_property(db: Session, products_group_id: int, property_name: str, new_property_value):
+    db_products_group_json = __get_products_group_instance_by_id(db=db, products_group_id=products_group_id).json()
+    property_type = type(db_products_group_json[property_name])
+    
+    if property_type != type(new_property_value):
+        try:
+            new_property_value = db_products_group_json[property_name].__class__(new_property_value)
+        except ValueError:
+            return {'404': 'Incorrect property type'}
+
+    db_products_group_json[property_name] = new_property_value
+    db_products_group = model.ProductsGroup(**db_products_group_json)
+    db.add(db_products_group)
+    db.commit()
+    db.refresh(db_products_group)
+    return db_products_group
+
+
 def __find_products_groups_instances_by_name_part(db: Session, name_part: str, limit: int = 5):
     result = db.query(model.ProductsGroup).filter(literal(name_part).contains(model.ProductsGroup.name))
     return result.limit(limit).all()
