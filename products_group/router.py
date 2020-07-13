@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends, HTTPException
 from . import schemas, controller
 from sqlalchemy.orm import Session
 from database import SessionLocal
-from typing import List
 
 
 async def get_db():

@@ -82,8 +82,8 @@ def get_products_of_group_ids_list(db: Session, products_group_id: int, limit: i
 
 
 def get_last_products_of_group_data_list(db: Session, products_group_id: int, limit: int):
-    def product_data_getter(id):
-        return product_controller.get_product_data_by_id(db=db, id=id)
+    def product_data_getter(product_id):
+        return product_controller.get_product_data_by_id(db=db, product_id=product_id)
 
     last_products_ids_list = get_products_of_group_ids_list(db=db, products_group_id=products_group_id, limit=limit)
 
