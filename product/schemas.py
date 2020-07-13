@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 
 class ProductCreation(BaseModel):
-    stock_keeping_unit: int
+    id: int
     name: str
     group_id: int
     stock_balance: int

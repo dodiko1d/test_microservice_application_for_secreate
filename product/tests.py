@@ -11,7 +11,7 @@ client = TestClient(app)
 
 def test_product_creation():
     product_creation_params = {
-            'stock_keeping_unit': 10,
+            'id': 10,
             'name': '',
             'group_id': 100,
             'stock_balance': 10,

@@ -15,10 +15,16 @@ async def get_db():
 router = APIRouter()
 
 
-@router.post('/create/')
+async def check_products_group_existence(product_id: int, db: Session = Depends(get_db)):
+    db_products_group = controller.get_product_data_by_id(db, product_id=product_id)
+    if not db_products_group:
+        raise HTTPException(status_code=400, detail='Product with this id does not exist.')
+
+
+@router.post('/create/', summary='Create your product.')
 async def create(product: schemas.ProductCreation, db: Session = Depends(get_db)):
-    db_product = controller.get_product_by_stock_keeping_unit(db, product)
+    db_product = controller.get_product_data_by_id(db, product_id=product.id)
     if db_product:
-        raise HTTPException(status_code=400, detail="Product is already registered.")
+        raise HTTPException(status_code=400, detail='Product has been already registered.')
     controller.create_product(db=db, product=product)
     return {'status_code': '200'}
