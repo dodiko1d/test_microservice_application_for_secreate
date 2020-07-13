@@ -7,4 +7,5 @@ class ProductCreation(BaseModel):
     name: str
     group_id: int
     stock_balance: int
+    reserved_number: int
     description: Optional[str] = ''

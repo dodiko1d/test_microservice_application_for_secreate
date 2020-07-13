@@ -11,7 +11,7 @@ class Product(Base):
     group_id = Column(Integer, ForeignKey('products_group.id'))
     stock_balance = Column(Integer)
     description = Column(String)
-    reserved = Column(Integer)
+    reserved_number = Column(Integer)
 
     group = relationship('ProductGroup', back_populates='products_of_group')
 

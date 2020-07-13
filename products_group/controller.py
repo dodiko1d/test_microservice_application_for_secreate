@@ -29,12 +29,12 @@ def remove_products_group(db: Session, products_group_id: int):
 def change_products_group_property(db: Session, products_group_id: int, property_name: str, new_property_value):
     db_products_group_json = __get_products_group_instance_by_id(db=db, products_group_id=products_group_id).json()
     property_type = type(db_products_group_json[property_name])
-    
+
     if property_type != type(new_property_value):
         try:
             new_property_value = db_products_group_json[property_name].__class__(new_property_value)
         except ValueError:
-            return {'404': 'Incorrect property type'}
+            return {'404': 'Incorrect property type.'}
 
     db_products_group_json[property_name] = new_property_value
     db_products_group = model.ProductsGroup(**db_products_group_json)
