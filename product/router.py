@@ -58,7 +58,7 @@ async def change_product_property(product_id: int, property_name: str, new_prope
     summary='Increase product stock balance.',
     dependencies=[Depends(check_product_existence)]
 )
-def increase_stock_balance(db: Session, product_id: int, increasing_value: int):
+def increase_stock_balance(product_id: int, increasing_value: int, db: Session = Depends(get_db)):
     return controller.increase_stock_balance(db=db, product_id=product_id, increasing_value=increasing_value)
 
 
@@ -67,7 +67,7 @@ def increase_stock_balance(db: Session, product_id: int, increasing_value: int):
     summary='Reduce product stock balance.',
     dependencies=[Depends(check_product_existence)]
 )
-def reduce_stock_balance(db: Session, product_id: int, reducing_value: int):
+def reduce_stock_balance(product_id: int, reducing_value: int, db: Session = Depends(get_db)):
     return controller.reduce_stock_balance(db=db, product_id=product_id, reducing_value=reducing_value)
 
 
@@ -76,7 +76,7 @@ def reduce_stock_balance(db: Session, product_id: int, reducing_value: int):
     summary='Get rest not reserved product amount.',
     dependencies=[Depends(check_product_existence)]
 )
-def get_rest_not_reserved_product(db: Session, product_id: int):
+def get_rest_not_reserved_product(product_id: int, db: Session = Depends(get_db)):
     return controller.get_rest_not_reserved_product(db=db, product_id=product_id)
 
 
@@ -85,7 +85,7 @@ def get_rest_not_reserved_product(db: Session, product_id: int):
     summary='Increase reserved product.',
     dependencies=[Depends(check_product_existence)]
 )
-def increase_reserved_product(db: Session, product_id: int, increasing_value: int):
+def increase_reserved_product(product_id: int, increasing_value: int, db: Session = Depends(get_db)):
     controller.increase_reserved_product(db=db, product_id=product_id, increasing_value=increasing_value)
 
 
@@ -94,7 +94,7 @@ def increase_reserved_product(db: Session, product_id: int, increasing_value: in
     summary='Reduce reserved product.',
     dependencies=[Depends(check_product_existence)]
 )
-def reduce_reserved_product(db: Session, product_id: int, reducing_value: int):
+def reduce_reserved_product(product_id: int, reducing_value: int, db: Session = Depends(get_db)):
     return controller.reduce_reserved_product(db=db, product_id=product_id, reducing_value=reducing_value)
 
 
@@ -103,5 +103,5 @@ def reduce_reserved_product(db: Session, product_id: int, reducing_value: int):
     summary='Change product group.',
     dependencies=[Depends(check_product_existence)]
 )
-def change_product_group(db: Session, product_id: int, new_group_id: int):
+def change_product_group(product_id: int, new_group_id: int, db: Session = Depends(get_db)):
     return controller.change_product_group(db=db, product_id=product_id, new_group_id=new_group_id)
