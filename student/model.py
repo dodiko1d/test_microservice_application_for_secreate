@@ -5,19 +5,13 @@ from database import Base
 from sqlalchemy.orm import relationship
 
 
-class Product(Base):
-    __tablename__ = 'product'
+class Student(Base):
+    __tablename__ = 'student'
 
-    id = Column(Integer, primary_key=True, index=True)
+    students_record_book_id = Column(Integer, primary_key=True)
     name = Column(String)
-    group_id = Column(Integer, ForeignKey('products_group.id'))
-    stock_balance = Column(Integer)
-    description = Column(String)
-    reserved_number = Column(Integer)
-
-    group = relationship('ProductGroup', back_populates='products_of_group')
-
-    __table_args__ = (
-        CheckConstraint(0 <= stock_balance, name='check_stock_balance_positive'),
-        CheckConstraint(0 <= reserved_number, name='check_reserved_product'),
-    )
+    surname = Column(String)
+    patronymic = Column(String)
+    full_name = Column(String)
+    studying_group = relationship('StudyingGroup', back_populates='students_of_group')
+    references = relationship('Reference', back_populates='student_reference_creating_for')

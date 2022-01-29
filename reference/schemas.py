@@ -2,13 +2,11 @@
 I tried to use them less because in this specific situation it was easier
  and more operative-memory-friendly. """
 
+from typing import Optional
 from pydantic import BaseModel
 
 
-class StudentCreation(BaseModel):
-    faculty_id: int
-    group_id: int
-    student_id: int
+class ProductsGroupCreation(BaseModel):
+    id: int
     name: str
-    surname: str
-    patronymic: str
+    description: Optional[str] = ''

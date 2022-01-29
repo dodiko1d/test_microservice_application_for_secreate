@@ -23,13 +23,19 @@ async def check_product_existence(product_id: int, db: Session = Depends(get_db)
         raise HTTPException(status_code=400, detail='Product with this id does not exist.')
 
 
-@router.post('/create/', summary='Create your product.')
-async def create(product: schemas.ProductCreation, db: Session = Depends(get_db)):
-    db_product = controller.get_product_data_by_id(db, product_id=product.id)
-    if db_product:
-        raise HTTPException(status_code=400, detail='Product has been already registered.')
-    controller.create_product(db=db, product=product)
-    return {'status_code': '200'}
+@router.post('/create/', summary='Create student account.')
+async def create(student: schemas.StudentCreation, db: Session = Depends(get_db)):
+    db_student = controller.get_by_students_record_book_id(
+        db=db,
+        students_record_book_id=student.faculty_id + student.group_id + student.student_id
+    )
+    if db_student:
+        raise HTTPException(status_code=400, detail='Some student already has this id.')
+    student_record = controller.create(db=db, student=student)
+    return {
+        'status_code': 200,
+        'data': student_record,
+    }
 
 
 @router.post(
